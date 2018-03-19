@@ -1,0 +1,24 @@
+{
+  "name": "Makani",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^9.4.7",
+    "nodemon": "^1.17.2",
+    "ts-node": "^5.0.1",
+    "typescript": "^2.7.2"
+  },
+  "dependencies": {
+    "@types/jquery": "^3.3.1",
+    "eslint": "^4.19.0",
+    "jquery": "^3.3.1",
+    "tslint": "^5.9.1"
+  }
+}

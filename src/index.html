@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)file:///C:/Users/SD/Desktop/Makani/src/index.html -->
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>Blank HTML5</title>
+    <link rel="stylesheet" href="./Blank HTML5_files/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="./Blank HTML5_files/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="./Blank HTML5_files/mdb.min.css" rel="stylesheet">
+
+    <style>
+        /* Required for full background image */
+
+        html,
+        body,
+        header,
+        .view {
+            height: 100%;
+        }
+
+        @media (max-width: 740px) {
+            header {
+                height: 100vh;
+            }
+        }
+
+        .top-nav-collapse {
+            background-color: #f8bbd0 !important;
+        }
+
+        .navbar:not(.top-nav-collapse) {
+            background: transparent !important;
+        }
+
+        @media (max-width: 768px) {
+            .navbar:not(.top-nav-collapse) {
+                background: #f8bbd0 !important;
+            }
+        }
+
+        .jarallax {
+            min-height: auto;
+        }
+    </style>
+    <style type="text/css">
+        /* Chart.js */
+
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main navigation -->
+    <header>
+
+        <!-- Full Page Intro -->
+        <div class="view  jarallax" data-jarallax="{&quot;speed&quot;: 0.2}" style="background-image: url(&#39;./gradient2.png&#39;); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+            <!-- Mask & flexbox options-->
+            <div class="mask rgba-purple-slight justify-content-center align-items-center">
+                <!-- Content -->
+                <div class="container">
+                    <!--Grid row-->
+                    <div class="row wow fadeIn">
+                        <!--Grid column-->
+                        <div class="col-md-12 text-center">
+                            <h1 class="display-4 font-weight-bold mb-0 pt-md-5 pt-5 wow fadeInUp">
+                                Dubai Makani Number
+                                <br>
+                                <h3>To Map Coordinate Converter</h3>
+                            </h1>
+                            <br>
+                            <br>
+                            <h5 class="pt-md-5 pt-sm-2 pt-5 pb-md-5 pb-sm-3 pb-5 wow fadeInUp" data-wow-delay="0.2s">
+                                Either Enter Makani No to get Coords Or the Opposite.
+                            </h5>
+                            <div class="container">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <input type="text" name="makani" id="makani" class="form-control" placeholder="Enter Makani Number">
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" name="lat" id="lat" class="form-control" placeholder="Enter Latitude">
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" name="lng" id="lng" class="form-control" placeholder="Enter Longitude">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="wow fadeInUp" data-wow-delay="0.4s">
+                                <br>
+                                <button class="btn btn-purple btn-rounded waves-effect waves-light" onclick="exec()" type="button">
+                                    Execute!
+                                </button>
+                            </div>
+                        </div>
+                        <!--Grid column-->
+                    </div>
+                    <!--Grid row-->
+                </div>
+                <!-- Content -->
+            </div>
+            <!-- Mask & flexbox options-->
+        </div>
+        <!-- Full Page Intro -->
+    </header>
+    <!-- Main navigation -->
+
+    <!-- JQuery -->
+    <script type="text/javascript" src="./Blank HTML5_files/jquery.min.js.download"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="./Blank HTML5_files/popper.min.js.download"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="./Blank HTML5_files/bootstrap.min.js.download"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="./Blank HTML5_files/mdb.min.js.download"></script>
+
+    <script src="./index.js"></script>
+
+    <script>
+        $(function () {
+
+        });
+
+        function exec() {
+            var makani = $('#makani');
+            var lat = $('#lat');
+            var lng = $('#lng');
+            var no = makani.val();
+            var latVal = lat.val();
+            var lngVal = lng.val();
+            if (no.length > 0) {
+                var m = new MakaniNumber(no);
+                m.fetch();
+                coords = m.latlng();
+                if (coords !== null) {
+                    lat.val(coords.lat);
+                    lng.val(coords.lng);
+                }
+                else {
+                    lat.val("Not Found");
+                    lng.val("Not Found");
+                }
+            }
+            else if (latVal.length > 0 && lngVal.length > 0) {
+                var m = MakaniNumber.fromCoord(latVal, lngVal);
+                if (m !== null) {
+                    makani.val(m.makaniNo());
+                }
+                else {
+                    makani.val("Not Found");
+                }
+            }
+        }
+    </script>
+
+
+    <div class="hiddendiv common"></div>
+</body>
+
+</html>
