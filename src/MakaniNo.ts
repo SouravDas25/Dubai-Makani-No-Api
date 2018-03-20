@@ -13,12 +13,14 @@ class MakaniNumber {
     private no:string;
     private validity:Object;
     private details:Object;
+    private isValidBit:Boolean;
 
     public constructor(number:string)
     {
         this.no = number;
         this.validity = {};
         this.details = {};
+        this.isValidBit = true;
     }
 
     static urlencode(text:string) {
@@ -30,17 +32,16 @@ class MakaniNumber {
             .replace(/%20/g, '+');
     }
 
-    static requestGET(url:string)
+    static requestGET(url:string,callback:Function)
     {
         var returnData = {} ;
         $.ajax({
             url: url,
-            async: false,
-            cache: false,
             success: function(data:string) {
                 data = JSON.parse(data);
                 //console.log(data);
                 returnData = data;
+                callback(data);
             },
             error : function(jqXHR : any, textStatus: any, errorThrown: any) {
                 throw errorThrown;
@@ -49,24 +50,44 @@ class MakaniNumber {
         return returnData
     }
 
-    private fetchValidity()
+    private fetchValidity(callback:Function)
     {
+        var This = this;
         var url = MakaniNumber.baseUrl + MakaniNumber.isValidLink + "?makanino=" + MakaniNumber.urlencode(this.no);
-        this.validity = MakaniNumber.requestGET(url);
+        MakaniNumber.requestGET(url,function(data:JSON){
+            This.validity = data;
+            callback(This);
+        });
         return this;
     }
 
-    private fetchDetails()
+    private fetchDetails(callback:Function)
     {
+        var This = this;
         var url = MakaniNumber.baseUrl + MakaniNumber.detailsLink + "?makanino=" + MakaniNumber.urlencode(this.no);
-        this.details = MakaniNumber.requestGET(url);
+        MakaniNumber.requestGET(url,function(data:JSON){
+            This.details = data;
+            callback(This);
+        });
         return this;
     }
 
-    public fetch()
+    public fetch(params : Object)
     {
-        this.fetchValidity();
-        this.fetchDetails()
+        var { success , fail } = params;
+        console.log(params);
+        try{
+            this.fetchValidity(function(self:MakaniNumber){
+                self.fetchDetails(function(self:MakaniNumber){
+                    success(self);
+                });
+            });
+        }
+        catch(e)
+        {
+            this.isValidBit = false;
+            fail(e);
+        }
         return this;
     }
 
@@ -81,11 +102,11 @@ class MakaniNumber {
 
     public isValid()
     {
-        if(this.validity.hasOwnProperty('IS_VALID') )
+        if(this.validity.hasOwnProperty('IS_VALID') && this.isValidBit == true)
         {
-            return this.validity.IS_VALID;
+            return new Boolean(this.validity.IS_VALID);
         }
-        return null;
+        return false;
     }
 
     public makaniNo()
@@ -103,20 +124,27 @@ class MakaniNumber {
         return null;
     }
 
-    private static fetchMakaniNo(lat:number,lng:number)
+    private static fetchMakaniNo(lat:number,lng:number,callback:Function)
     {
         var url = MakaniNumber.baseUrl + MakaniNumber.fromCoordLink + "?latitude=" + MakaniNumber.urlencode(lat.toString()) 
         + "&longitude=" + MakaniNumber.urlencode(lng.toString()); 
         //console.log(url);
-        var data =  MakaniNumber.requestGET(url);
-        return data;
+        return MakaniNumber.requestGET(url,callback);;
     }
 
-    static fromCoord(lat:number,lng:number)
+    static fromCoord(params : Object)
     {
-        var data = MakaniNumber.fetchMakaniNo(lat,lng);
-        var no = data.MAKANI_INFO[0].MAKANI;
-        return new MakaniNumber(no).fetch();
+        var { lat , lng } = params;
+        var data = MakaniNumber.fetchMakaniNo(lat,lng,function(data:JSON){
+            if(data.hasOwnProperty('MAKANI_INFO') === false) {
+                if(data.hasOwnProperty('DATA') === true){
+                    return params.fail(new Error(data.DATA));
+                }
+                return null;
+            }
+            var no = data.MAKANI_INFO[0].MAKANI;
+            return new MakaniNumber(no).fetch(params);
+        });
     }
 
 }
@@ -125,14 +153,17 @@ class MakaniNumber {
 function m2()
 {
     var makani = new MakaniNumber("30245 95127");
-    makani.fetch();
-    console.log(makani.latlng());
+    makani.fetch(function(data){
+        console.log(data.latlng());
+    });   
 }
 
 function m1()
 {
-    var makani = MakaniNumber.fromCoord(25.2646373,55.312168);
-    console.log(makani.isValid());
+    var makani = MakaniNumber.fromCoord(25.2646373,55.312168,function (data){
+        console.log(data.isValid());
+    });
+    
 }
 
 m1();

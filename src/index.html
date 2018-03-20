@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <title>Blank HTML5</title>
-    <link rel="stylesheet" href="./Blank HTML5_files/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
     <link href="./Blank HTML5_files/bootstrap.min.css" rel="stylesheet">
     <!-- Material Design Bootstrap -->
@@ -14,6 +14,119 @@
 
     <style>
         /* Required for full background image */
+
+        /* Progress Bar */
+
+        .progress {
+            position: relative;
+            height: 4px;
+            display: block;
+            width: 100%;
+            background-color: #acece6;
+            border-radius: 2px;
+            background-clip: padding-box;
+            margin: 0.5rem 0 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress .determinate {
+            position: absolute;
+            background-color: inherit;
+            top: 0;
+            bottom: 0;
+            background-color: #26a69a;
+            transition: width .3s linear;
+        }
+
+        .progress .indeterminate {
+            background-color: #26a69a;
+        }
+
+        .progress .indeterminate:before {
+            content: '';
+            position: absolute;
+            background-color: inherit;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            will-change: left, right;
+            -webkit-animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+            animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+        }
+
+        .progress .indeterminate:after {
+            content: '';
+            position: absolute;
+            background-color: inherit;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            will-change: left, right;
+            -webkit-animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+            animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+            -webkit-animation-delay: 1.15s;
+            animation-delay: 1.15s;
+        }
+
+        @-webkit-keyframes indeterminate {
+            0% {
+                left: -35%;
+                right: 100%;
+            }
+            60% {
+                left: 100%;
+                right: -90%;
+            }
+            100% {
+                left: 100%;
+                right: -90%;
+            }
+        }
+
+        @keyframes indeterminate {
+            0% {
+                left: -35%;
+                right: 100%;
+            }
+            60% {
+                left: 100%;
+                right: -90%;
+            }
+            100% {
+                left: 100%;
+                right: -90%;
+            }
+        }
+
+        @-webkit-keyframes indeterminate-short {
+            0% {
+                left: -200%;
+                right: 100%;
+            }
+            60% {
+                left: 107%;
+                right: -8%;
+            }
+            100% {
+                left: 107%;
+                right: -8%;
+            }
+        }
+
+        @keyframes indeterminate-short {
+            0% {
+                left: -200%;
+                right: 100%;
+            }
+            60% {
+                left: 107%;
+                right: -8%;
+            }
+            100% {
+                left: 107%;
+                right: -8%;
+            }
+        }
 
         html,
         body,
@@ -89,15 +202,18 @@
                         <!--Grid column-->
                         <div class="col-md-12 text-center">
                             <h1 class="display-4 font-weight-bold mb-0 pt-md-5 pt-5 wow fadeInUp">
-                                Dubai Makani Number
+                                Dubai Makani API
                                 <br>
-                                <h3>To Map Coordinate Converter</h3>
+                                <h4>Makani No <i class="fa fa-exchange"></i> Map Coordinates</h4>
                             </h1>
                             <br>
                             <br>
                             <h5 class="pt-md-5 pt-sm-2 pt-5 pb-md-5 pb-sm-3 pb-5 wow fadeInUp" data-wow-delay="0.2s">
                                 Either Enter Makani No to get Coords Or the Opposite.
                             </h5>
+                            <div class="progress" id="Progress" style="display:none">
+                                <div class="indeterminate"></div>
+                              </div>
                             <div class="container">
                                 <div class="form-row">
                                     <div class="col">
@@ -149,6 +265,8 @@
         });
 
         function exec() {
+            var progress = $('#Progress');
+            progress.show(200);
             var makani = $('#makani');
             var lat = $('#lat');
             var lng = $('#lng');
@@ -157,25 +275,42 @@
             var lngVal = lng.val();
             if (no.length > 0) {
                 var m = new MakaniNumber(no);
-                m.fetch();
-                coords = m.latlng();
-                if (coords !== null) {
-                    lat.val(coords.lat);
-                    lng.val(coords.lng);
-                }
-                else {
-                    lat.val("Not Found");
-                    lng.val("Not Found");
-                }
+                m.fetch({
+                    success : function (data) {
+                        coords = data.latlng();
+                        if (coords !== null) {
+                            lat.val(coords.lat);
+                            lng.val(coords.lng);
+                        }
+                        else {
+                            lat.val("Not Found");
+                            lng.val("Not Found");
+                        }
+                        progress.hide(200);
+                    },
+                    fail: function(e){
+                        progress.hide(200);
+                    }
+                });
             }
             else if (latVal.length > 0 && lngVal.length > 0) {
-                var m = MakaniNumber.fromCoord(latVal, lngVal);
-                if (m !== null) {
-                    makani.val(m.makaniNo());
-                }
-                else {
-                    makani.val("Not Found");
-                }
+                var m = MakaniNumber.fromCoord({
+                    lat : latVal,
+                    lng : lngVal,
+                    success : function (data) {
+                        if (data !== null) {
+                            makani.val(data.makaniNo());
+                        }
+                        else {
+                            makani.val("Not Found");
+                        }
+                        progress.hide(200);
+                    },
+                    fail: function(e){
+                        makani.val("Not Found");
+                        progress.hide(200);
+                    }
+                });
             }
         }
     </script>

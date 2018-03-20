@@ -17,11 +17,18 @@ include this script tag in your html file, and you are ready to use makani API.
 ```Javascript
 
 var No = "30245 95127";
-var makani = new MakaniNumber(No).fetch();
+var makani = new MakaniNumber(No);
+makani.fetch({
+  success : function (data) {
+      if( data.isValid() ) {
+        //do something..
+      }
+  },
+  fail: function(e) {
+      //do something..
+  }
+});
 
-if( makani.isValid() ) {
-  //do something..
-}
 
 ```
 
@@ -30,13 +37,19 @@ if( makani.isValid() ) {
 ```Javascript
 
 var No = "30245 95127";
-var makani = new MakaniNumber(No).fetch();
-
-if( makani.isValid() ) {
-  var lat = makani.latlng().lat;
-  var lng = makani.latlng().lng;
-}
-
+var makani = new MakaniNumber(No);
+makani.fetch({
+  success : function (data) {
+      if( data.isValid() ) {
+        var lat = data.latlng().lat;
+        var lng = data.latlng().lng;
+        // your code...
+      }
+  },
+  fail: function(e) {
+      //do something..
+  }
+});
 
 ```
 
@@ -47,11 +60,18 @@ if( makani.isValid() ) {
 
 var lat = 25.2646373;
 var lng = 55.312168;
-var makani = MakaniNumber.fromCoord(lat,lng);
-
-if( makani.isValid() ) {
-  console.log(makani.makaniNo());
-}
-
-
+var makani = MakaniNumber.fromCoord( {
+    lat : lat,
+    lng : lng,
+    success : function (data) {
+        if (data !== null && data.isValid() ) {
+            var makani_no = makani.makaniNo();
+            //your code...
+        }
+    },
+    fail: function(e) {
+        //do something..
+    }
+  }
+);
 ```
