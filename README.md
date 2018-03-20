@@ -4,7 +4,7 @@ Dubai Makani No Api - Convert Makani No to and from Map Coordinates and many mor
 ## installation
 include this script tag in your html file, and you are ready to use makani API.
 ```html
-
+<!-- Place MakaniNo.js in approriate folder first  -->
 <script src="./src/MakaniNo.js"> </script>
 
 ```
