@@ -64,7 +64,8 @@ var makani = MakaniNumber.fromCoord( {
     lat : lat,
     lng : lng,
     success : function (data) {
-        if (data !== null && data.isValid() ) {
+        if (data !== null && data.isValid() )  
+        {
             var makani_no = makani.makaniNo();
             //your code...
         }
