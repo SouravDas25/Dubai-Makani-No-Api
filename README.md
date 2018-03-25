@@ -83,3 +83,5 @@ this release works as long as their api work.
 here is the link from where the api is taken.
 
 https://www.dm.gov.ae/wps/wcm/connect/b1c96c7e-98d3-447a-b4b4-6c84f15e027a/Makani+Public+Web+Service+Access.pdf?MOD=AJPERES
+
+https://www.makani.ae/MakaniPublicDataService/MakaniPublic.svc
