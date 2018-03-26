@@ -66,7 +66,7 @@ var makani = MakaniNumber.fromCoord( {
     success : function (data) {
         if (data !== null && data.isValid() )  
         {
-            var makani_no = makani.makaniNo();
+            var makani_no = data.makaniNo();
             //your code...
         }
     },
