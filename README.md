@@ -99,9 +99,9 @@ var makani = MakaniNumber.fromCoord( {
 
 ## Test Site
 a test site is provided out of the box to test your system.
-it is located <a href="./src/Test-your-built-Here.index.html"> here</a>.
+it is located <a href="https://github.com/SouravDas25/Dubai-Makani-No-Api/tree/master/src/Test-your-built-Here"> here</a>.
 
-![site-image](./src/Test-your-built-Here.screens.png)
+![site-image](https://github.com/SouravDas25/Dubai-Makani-No-Api/blob/master/src/Test-your-built-Here/screens.png)
 
 #### Dependency
 all api link are provided by the Dubai Government.
