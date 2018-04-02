@@ -54,6 +54,26 @@ makani.fetch({
 ```
 
 
+#### Get Address From Makani No
+
+```Javascript
+
+var No = "30245 95127";
+var makani = new MakaniNumber(No);
+makani.fetch({
+  success : function (data) {
+      if( data.isValid() ) {
+        var address = data.address();
+        // your code...
+      }
+  },
+  fail: function(e) {
+      //do something..
+  }
+});
+
+```
+
 #### Get Makani No From Lat-Lng
 
 ```Javascript
@@ -76,6 +96,12 @@ var makani = MakaniNumber.fromCoord( {
   }
 );
 ```
+
+## Test Site
+a test site is provided out of the box to test your system.
+it is located <a href="./src/Test-your-built-Here.index.html"> here</a>.
+
+![site-image](./src/Test-your-built-Here.screens.png)
 
 #### Dependency
 all api link are provided by the Dubai Government.

@@ -192,9 +192,10 @@
     <header>
 
         <!-- Full Page Intro -->
-        <div class="view  jarallax" data-jarallax="{&quot;speed&quot;: 0.2}" style="background-image: url(&#39;./gradient2.png&#39;); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+        <div class="view" style="background-image: url(&#39;./bg-1.jpg&#39;); 
+        background-repeat: no-repeat; background-size: cover; background-position: center center;">
             <!-- Mask & flexbox options-->
-            <div class="mask rgba-purple-slight justify-content-center align-items-center">
+            <div class="mask rgba-black-slight justify-content-center align-items-center">
                 <!-- Content -->
                 <div class="container">
                     <!--Grid row-->
@@ -204,26 +205,58 @@
                             <h1 class="display-4 font-weight-bold mb-0 pt-md-5 pt-5 wow fadeInUp">
                                 Dubai Makani API
                                 <br>
-                                <h4>Makani No <i class="fa fa-exchange"></i> Map Coordinates</h4>
+                                <h4>Makani No
+                                    <i class="fa fa-exchange"></i> Map Coordinates</h4>
                             </h1>
                             <br>
                             <br>
-                            <h5 class="pt-md-5 pt-sm-2 pt-5 pb-md-5 pb-sm-3 pb-5 wow fadeInUp" data-wow-delay="0.2s">
-                                Either Enter Makani No to get Coords Or the Opposite.
-                            </h5>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
                             <div class="progress" id="Progress" style="display:none">
                                 <div class="indeterminate"></div>
-                              </div>
+                            </div>
+
                             <div class="container">
                                 <div class="form-row">
-                                    <div class="col">
-                                        <input type="text" name="makani" id="makani" class="form-control" placeholder="Enter Makani Number">
+                                    <div class="col input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-maxcdn"></i>
+                                            </div>
+                                        </div>
+                                        <input type="tel" name="makani" id="makani" class="form-control py-2" placeholder="Enter Makani Number">
                                     </div>
                                     <div class="col">
-                                        <input type="text" name="lat" id="lat" class="form-control" placeholder="Enter Latitude">
+                                        <i class="fa fa-exchange" style="font-size:30px"></i>
                                     </div>
-                                    <div class="col">
-                                        <input type="text" name="lng" id="lng" class="form-control" placeholder="Enter Longitude">
+                                    <div class="col input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-map-marker"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" name="lat" id="lat" class="form-control py-2" placeholder="Enter Latitude">
+                                    </div>
+                                    <div class="col input-group ">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-map-marker"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" name="lng" id="lng" class="form-control py-2" placeholder="Enter Longitude">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-row ">
+                                    <div class="col input-group text-left">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-home"></i>
+                                            </div>
+                                        </div>
+                                        <address id="address" name="address" class="form-control py-2">Address</address>
                                     </div>
                                 </div>
                             </div>
@@ -231,7 +264,7 @@
 
                             <div class="wow fadeInUp" data-wow-delay="0.4s">
                                 <br>
-                                <button class="btn btn-purple btn-rounded waves-effect waves-light" onclick="exec()" type="button">
+                                <button class="btn btn-purple waves-effect waves-light" onclick="exec()" type="button">
                                     Execute!
                                 </button>
                             </div>
@@ -257,7 +290,7 @@
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="./Blank HTML5_files/mdb.min.js.download"></script>
 
-    <script src="./MakaniNo.js"></script>
+    <script src="../MakaniNo.js"></script>
 
     <script>
         $(function () {
@@ -270,43 +303,48 @@
             var makani = $('#makani');
             var lat = $('#lat');
             var lng = $('#lng');
+            var address = $('#address');
             var no = makani.val();
             var latVal = lat.val();
             var lngVal = lng.val();
             if (no.length > 0) {
                 var m = new MakaniNumber(no);
                 m.fetch({
-                    success : function (data) {
+                    success: function (data) {
                         coords = data.latlng();
                         if (coords !== null) {
                             lat.val(coords.lat);
                             lng.val(coords.lng);
+                            address.html(data.address());
                         }
                         else {
-                            lat.val("Not Found");
-                            lng.val("Not Found");
+                            lat.val("No Result");
+                            lng.val("No Result");
+                            address.html("No Result");
                         }
                         progress.hide(200);
                     },
-                    fail: function(e){
+                    fail: function (e) {
                         progress.hide(200);
                     }
                 });
             }
             else if (latVal.length > 0 && lngVal.length > 0) {
                 var m = MakaniNumber.fromCoord({
-                    lat : latVal,
-                    lng : lngVal,
-                    success : function (data) {
+                    lat: latVal,
+                    lng: lngVal,
+                    success: function (data) {
                         if (data !== null) {
                             makani.val(data.makaniNo());
+                            address.html(data.address());
                         }
                         else {
-                            makani.val("Not Found");
+                            makani.val("No Result");
+                            address.html("No Result");
                         }
                         progress.hide(200);
                     },
-                    fail: function(e){
+                    fail: function (e) {
                         makani.val("Not Found");
                         progress.hide(200);
                     }

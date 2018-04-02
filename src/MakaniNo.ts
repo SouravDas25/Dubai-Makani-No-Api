@@ -116,10 +116,23 @@ class MakaniNumber {
 
     public latlng()
     {
+        console.log(this.details);
         if(this.details.hasOwnProperty('MAKANI_INFO') && this.details.MAKANI_INFO.length > 0)
         {
             var coords:Array<string> = this.details.MAKANI_INFO[0].LATLNG.match(/[+-]?\d+(?:\.\d+)?/g);
             return { lat : coords[0] , lng : coords[1] };
+        }
+        return null;
+    }
+
+    public address()
+    {
+        var address:string = "";
+        if(this.details.hasOwnProperty('MAKANI_INFO') && this.details.MAKANI_INFO.length > 0)
+        {
+            var t = this.details.MAKANI_INFO[0];
+            address += t.BLDG_NAME_E+ " " + t.COMMUNITY_E + " " + t.EMIRATE_E;
+            return address;
         }
         return null;
     }
