@@ -1,7 +1,14 @@
 # Dubai-Makani-No-Api
 Dubai Makani No Api - Convert Makani No to and from Map Coordinates and many more.
 
+## Update 
+as some new changes has been made to the makani server the javascript Api Won't work due to CORS errors/
+'Access-Control-Allow-Origin' header error.
+Thus a PHP implementation of the API is provided to bypass the CORs.
+
 ## installation
+
+### Javascript
 include this script tag in your html file, and you are ready to use makani API.
 ```html
 <!-- Place MakaniNo.js in approriate folder first  -->
@@ -9,11 +16,23 @@ include this script tag in your html file, and you are ready to use makani API.
 
 ```
 
+### PHP 
+import the makani.php in any of your php file to use it.
+```php
+
+// procedural
+require Makani.php
+
+// OOP
+use Makani;
+
+```
 
 ## usage
 
 #### Verify Makani No
 
+##### Javascript
 ```Javascript
 
 var No = "30245 95127";
@@ -28,6 +47,18 @@ makani.fetch({
       //do something..
   }
 });
+
+
+```
+
+##### PHP
+```php
+
+$makani_no = $_GET['makani_no'];
+$data = Makani::Query($makani_no)->toJson();
+if(data.valid){
+    echo "MAKANI IS VALID";
+}
 
 
 ```
