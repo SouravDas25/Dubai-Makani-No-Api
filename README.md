@@ -29,7 +29,7 @@ use Makani;
 
 ## usage
 
-#### Verify Makani No
+### Verify Makani No
 
 ##### Javascript
 ```Javascript
@@ -52,17 +52,19 @@ makani.fetch({
 
 ##### PHP
 ```php
-$makani_no = $_GET['makani_no'];
+$makani_no = "30245 95127";
 $data = Makani::Query($makani_no)->toJson();
-if(data.valid){
+if(data->valid){
     echo "MAKANI IS VALID";
 }
 
 
 ```
 
-#### Get Lat-Lng From Makani No
+### Get Lat-Lng From Makani No
 
+
+##### Javascript
 ```Javascript
 
 var No = "30245 95127";
@@ -82,9 +84,19 @@ makani.fetch({
 
 ```
 
+##### PHP
+```php
+$makani_no = "30245 95127";
+$data = Makani::Query($makani_no)->toJson();
+echo "$data->lat , $data->lng";
 
-#### Get Address From Makani No
+```
 
+
+### Get Address From Makani No
+
+
+##### Javascript
 ```Javascript
 
 var No = "30245 95127";
@@ -103,8 +115,17 @@ makani.fetch({
 
 ```
 
-#### Get Makani No From Lat-Lng
+##### PHP
+```php
+$makani_no = "30245 95127";
+$data = Makani::Query($makani_no)->toJson();
+echo $data->address;
 
+```
+
+### Get Makani No From Lat-Lng
+
+##### Javascript
 ```Javascript
 
 var lat = 25.2646373;
@@ -126,11 +147,21 @@ var makani = MakaniNumber.fromCoord( {
 );
 ```
 
+##### PHP
+```php
+$lat = 25.2646373;
+$lng = 55.312168;
+$data = Makani::fromCoords($lat,$lng)->toString();
+echo $data;
+
+```
+
+
 ## Test Site
 a test site is provided out of the box to test your system.
 it is located <a href="https://github.com/SouravDas25/Dubai-Makani-No-Api/tree/master/src/Test-your-built-Here"> here</a>.
 
-![site-image](https://github.com/SouravDas25/Dubai-Makani-No-Api/blob/master/src/Test-your-built-Here/screens.png)
+![site-image](https://github.com/SouravDas25/Dubai-Makani-No-Api/blob/master/Apis/Javascript/src/Test-your-built-Here/screens.png)
 
 #### Dependency
 all api link are provided by the Dubai Government.
