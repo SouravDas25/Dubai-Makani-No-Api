@@ -19,7 +19,6 @@ include this script tag in your html file, and you are ready to use makani API.
 #### PHP 
 import the makani.php in any of your php file to use it.
 ```php
-
 // procedural
 require Makani.php
 
@@ -53,7 +52,6 @@ makani.fetch({
 
 ##### PHP
 ```php
-
 $makani_no = $_GET['makani_no'];
 $data = Makani::Query($makani_no)->toJson();
 if(data.valid){
