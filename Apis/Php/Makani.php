@@ -93,7 +93,7 @@ class Makani
     }
 
 
-    public function toJson()
+    public function toArray()
     {
         return [
             'valid' => $this->isValid(),
@@ -106,7 +106,12 @@ class Makani
 
     public function toString()
     {
-        return json_encode($this->toJson(),JSON_PRETTY_PRINT);
+        return json_encode($this->toArray(),JSON_PRETTY_PRINT);
+    }
+
+    public function toJson()
+    {
+        return json_decode($this->toString());
     }
 
     public static function Query($makani_no)
@@ -114,7 +119,7 @@ class Makani
         return new Makani($makani_no);
     }
 
-    protected static function fromCoords($lat,$lng)
+    public static function fromCoords($lat,$lng)
     {
         $url = Makani::$baseUrl . Makani::$fromCoordLink;
         $res = Makani::fetchUrl($url,['latitude' => $lat , 'longitude' => $lng ] );
@@ -131,4 +136,8 @@ class Makani
 }
 
 
-echo Makani::Query("30245 95127")->toString();
+$lat = 25.2646373;
+$lng = 55.312168;
+$data = Makani::fromCoords($lat,$lng)->toString();
+
+echo $data;
